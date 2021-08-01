@@ -1,0 +1,228 @@
+import 'package:flutter/material.dart';
+import 'package:insidescoop/helper/news.dart';
+import 'package:insidescoop/section/category_section.dart';
+import 'package:insidescoop/helper/info.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:insidescoop/views/category_news.dart';
+import 'package:insidescoop/helper/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:insidescoop/views/login_screen.dart';
+
+
+class Home extends StatefulWidget {
+  Home({Key key}) : super(key: key);
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
+
+class _HomeState extends State<Home> {
+
+  // ignore: deprecated_member_use
+  List<CategorySection> categories = new List<CategorySection>();
+
+  bool _loading = true;
+  int currentIndex = 0;
+  var articles;
+
+  void changePage(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    categories = getcategories();
+    getNews();
+  }
+
+
+
+  getNews() async {
+    News newsClass = News();
+    await newsClass.getNews();
+    articles = newsClass.news;
+    setState(() {
+      _loading = false;
+    });
+  }
+  bool themeSwitch = false;
+
+  dynamic themeColors() {
+    if (themeSwitch) {
+      return Colors.amber[100];
+    } else {
+      return Colors.white;
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+
+          backgroundColor: themeColors(),
+          brightness: themeSwitch ? Brightness.dark : Brightness.light,
+          leading: IconButton(
+            onPressed: () {
+              setState((){
+                themeSwitch = !themeSwitch;
+              });
+            },
+            icon: themeSwitch
+              ? Icon(Icons.visibility,
+            color: themeSwitch ? Colors.indigo[900] :
+            Colors.grey[850],)
+                : Icon(
+              Icons.wb_sunny,
+              color: themeSwitch ? Colors.greenAccent :
+            Colors.deepOrangeAccent,
+
+            ),
+            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+
+              Text(
+                "Inside",
+                style: GoogleFonts.pacifico(
+                color: Colors.black87, fontWeight: FontWeight.w600,),
+              ) ,
+              Text(
+                "Scoop",
+                style: GoogleFonts.pacifico(color: Colors.red[900], fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+          Container(
+
+        child: OutlinedButton(
+        onPressed: () {
+    FirebaseAuth.instance.signOut();
+    Navigator.push(context, MaterialPageRoute(
+    builder: (context) => LoginScreen()))
+    ;
+    },
+        child: Text("Logout", style: TextStyle(color: Colors.black),
+        )),
+    ),
+    ],
+    elevation: 0.0,
+        ),
+        body: _loading
+            ? Center(
+          child: Container(
+            child: CircularProgressIndicator(),
+          ),
+        )
+            : SingleChildScrollView(
+          child: Container(
+
+            color: themeColors(),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: <Widget>[
+                /// Categories
+                Container(
+                  height: 70,
+                  child: ListView.builder(
+                      itemCount: categories.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return CategoryTile(
+                          imageUrl: categories[index].imageUrl,
+                          categoryName: categories[index].categoryName,
+                        );
+                      }),
+                ),
+
+                /// Blogs
+                Container(
+                  padding: EdgeInsets.only(top: 16),
+                  child: ListView.builder(
+                      itemCount: articles.length,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return BlogTile(
+                          imageUrl: articles[index].urlToImage,
+                          title: articles[index].title,
+                          desc: articles[index].description,
+                          content: articles[index].content,
+                          publishedAt: articles[index].publishedAt,
+                          blogUrl: articles[index].url,
+                        );
+                      }),
+                )
+              ],
+            ),
+          ),
+        )
+    );
+  }
+}
+
+
+
+
+class CategoryTile extends StatelessWidget {
+  final String imageUrl, categoryName;
+  CategoryTile(
+      {@required this.imageUrl,
+        @required this.categoryName});
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CategoryNews(
+                  category: categoryName.toLowerCase(),
+                )));
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 16),
+        child: Stack(
+          children: <Widget>[
+            ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  height: 60,
+                  width: 120,
+                  fit: BoxFit.cover,
+                ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              height: 60,
+              width: 120,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: Colors.black26
+              ),
+              child: Text(
+                categoryName,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.montaga(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
