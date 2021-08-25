@@ -3,7 +3,10 @@
     package="com.example.insidescoop">
 
     <uses-permission android:name="android.permission.INTERNET" />
-   <application
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
         android:label="readynews"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">

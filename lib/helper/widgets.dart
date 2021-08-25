@@ -47,6 +47,7 @@ class BlogTile extends StatelessWidget {
           ));
         },
       child: Container(
+
         margin: EdgeInsets.only(bottom: 16),
         child: Column(
           children: <Widget>[
@@ -64,7 +65,7 @@ class BlogTile extends StatelessWidget {
                   fontWeight: FontWeight.w500),
             ),
             SizedBox(
-              height: 8,
+              height: 5,
             ),
             Text(
               desc,

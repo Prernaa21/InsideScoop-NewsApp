@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:insidescoop/helper/news.dart';
 import 'package:insidescoop/section/category_section.dart';
 import 'package:insidescoop/helper/info.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:insidescoop/views/category_news.dart';
 import 'package:insidescoop/helper/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:insidescoop/views/login_screen.dart';
+import 'package:geolocator/geolocator.dart';
 
 
 class Home extends StatefulWidget {
@@ -20,6 +20,14 @@ final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 
 class _HomeState extends State<Home> {
+
+  Future<Position> getPosition() async {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+
 
   // ignore: deprecated_member_use
   List<CategorySection> categories = new List<CategorySection>();
@@ -41,8 +49,6 @@ class _HomeState extends State<Home> {
     getNews();
   }
 
-
-
   getNews() async {
     News newsClass = News();
     await newsClass.getNews();
@@ -60,6 +66,7 @@ class _HomeState extends State<Home> {
       return Colors.white;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,11 +98,11 @@ class _HomeState extends State<Home> {
               Text(
                 "Inside",
                 style: GoogleFonts.pacifico(
-                color: Colors.black87, fontWeight: FontWeight.w600,),
+                color: Colors.black87, fontWeight: FontWeight.w500,),
               ) ,
               Text(
                 "Scoop",
-                style: GoogleFonts.pacifico(color: Colors.red[900], fontWeight: FontWeight.w600),
+                style: GoogleFonts.pacifico(color: Colors.red[900], fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -109,6 +116,9 @@ class _HomeState extends State<Home> {
     builder: (context) => LoginScreen()))
     ;
     },
+      style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0))),
+          side: MaterialStateProperty.all(BorderSide(
+            color: Colors.white,))),
         child: Text("Logout", style: TextStyle(color: Colors.black),
         )),
     ),
@@ -123,13 +133,14 @@ class _HomeState extends State<Home> {
         )
             : SingleChildScrollView(
           child: Container(
-
             color: themeColors(),
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: <Widget>[
+
                 /// Categories
                 Container(
+                  margin: EdgeInsets.only(top: 25,),
                   height: 70,
                   child: ListView.builder(
                       itemCount: categories.length,
@@ -137,12 +148,22 @@ class _HomeState extends State<Home> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return CategoryTile(
-                          imageUrl: categories[index].imageUrl,
                           categoryName: categories[index].categoryName,
                         );
                       }),
                 ),
 
+                Container(
+                  width: 350,
+                    child: new Text(
+                        'Latest News  ',textAlign: TextAlign.left,
+                        style: GoogleFonts.poppins(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                          color: (Colors.black),
+                        )
+                    )
+                ),
                 /// Blogs
                 Container(
                   padding: EdgeInsets.only(top: 16),
@@ -162,6 +183,7 @@ class _HomeState extends State<Home> {
                       }),
                 )
               ],
+
             ),
           ),
         )
@@ -173,10 +195,9 @@ class _HomeState extends State<Home> {
 
 
 class CategoryTile extends StatelessWidget {
-  final String imageUrl, categoryName;
+  final String categoryName;
   CategoryTile(
-      {@required this.imageUrl,
-        @required this.categoryName});
+      {@required this.categoryName});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -191,29 +212,21 @@ class CategoryTile extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(right: 16),
         child: Stack(
+
           children: <Widget>[
-            ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  height: 60,
-                  width: 120,
-                  fit: BoxFit.cover,
-                ),
-            ),
             Container(
               alignment: Alignment.center,
-              height: 60,
+              height: 50,
               width: 120,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  color: Colors.black26
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.black)
               ),
               child: Text(
                 categoryName,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.montaga(
-                    color: Colors.white,
+                    color: Colors.blueGrey,
                     fontSize: 18,
                     fontWeight: FontWeight.w700),
               ),

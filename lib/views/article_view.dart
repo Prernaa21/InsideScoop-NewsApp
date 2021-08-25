@@ -52,9 +52,8 @@ class _ArticleviewState extends State<Articleview> {
             actions: <Widget>[
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Icon(Icons.share,)),
 
-            ],
+              )],
             backgroundColor: themeColors(),
             elevation: 0.0,
           ),

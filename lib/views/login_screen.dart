@@ -41,17 +41,26 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(top: 100),
-              child: Text(
-                "InsideScoop📰",
-                style: GoogleFonts.pacifico(
-                    color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 30),
-              ) ,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Inside",
+                    style: GoogleFonts.pacifico(
+                      color: Colors.black87, fontWeight: FontWeight.w500, fontSize: 28),
+                  ) ,
+                  Text(
+                    "Scoop",
+                    style: GoogleFonts.pacifico(color: Colors.red[900], fontWeight: FontWeight.w500,fontSize: 28),
+                  ),
+                ],
+              ),
 
               ),
             Container(
                 margin: EdgeInsets.only(top: 80,),
                 child: Text("Login",
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 25)
+                  style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 25)
 
                   ),),
 
