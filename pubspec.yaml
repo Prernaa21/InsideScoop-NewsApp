@@ -70,8 +70,7 @@ flutter:
   assets:
     - android/app/src/main/res/drawable/ls.png
     - android/app/src/main/res/drawable/s.png
-    - android/app/src/main/res/drawable/abg.png
-    - android/app/src/main/res/drawable/loginscreens.png
+    
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

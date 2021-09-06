@@ -21,14 +21,6 @@ final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 class _HomeState extends State<Home> {
 
-  Future<Position> getPosition() async {
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    return position;
-  }
-
-
-
   // ignore: deprecated_member_use
   List<CategorySection> categories = new List<CategorySection>();
 

@@ -58,10 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
               ),
             Container(
-                margin: EdgeInsets.only(top: 80,),
+                margin: EdgeInsets.only(top: 40,),
                 child: Text("Login",
                   style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 25)
-
                   ),),
 
             Container(
