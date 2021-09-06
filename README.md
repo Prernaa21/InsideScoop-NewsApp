@@ -6,7 +6,6 @@ https://user-images.githubusercontent.com/81813748/132207181-e0403586-5fb3-4075-
 ![login](https://user-images.githubusercontent.com/81813748/132203776-46bd66df-6c53-439c-8fec-1bffdc228a5a.jpg)
 ![email](https://user-images.githubusercontent.com/81813748/132204080-ab3e60db-89b1-4a1f-b022-989d2753ab42.jpg)
 ![phone](https://user-images.githubusercontent.com/81813748/132204108-74962b06-2409-492e-be31-f0f6d22251f2.jpg)
-![main](https://user-images.githubusercontent.com/81813748/132204142-ba2ff566-02d1-489a-837d-9b89a3558b04.jpg)
 
 # insidescoop
 
